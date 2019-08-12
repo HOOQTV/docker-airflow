@@ -15,30 +15,28 @@ This repository contains **Dockerfile** of [apache-airflow](https://github.com/a
 * Install [Docker Compose](https://docs.docker.com/compose/install/)
 * Following the Airflow release from [Python Package Index](https://pypi.python.org/pypi/apache-airflow)
 
-## Installation
-
-Pull the image from the Docker repository.
-
-    docker pull puckel/docker-airflow
-
 ## Build
+
+build the docker image and tag as latest
+
+    docker build -t caerus/docker-airflow .
 
 Optionally install [Extra Airflow Packages](https://airflow.incubator.apache.org/installation.html#extra-package) and/or python dependencies at build time :
 
-    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" -t puckel/docker-airflow .
-    docker build --rm --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
+    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" -t caerus/docker-airflow .
+    docker build --rm --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t caerus/docker-airflow .
 
 or combined
 
-    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
+    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t caerus/docker-airflow .
 
-Don't forget to update the airflow images in the docker-compose files to puckel/docker-airflow:latest.
+Don't forget to update the airflow images in the docker-compose files to caerus/docker-airflow:latest.
 
 ## Usage
 
 By default, docker-airflow runs Airflow with **SequentialExecutor** :
 
-    docker run -d -p 8080:8080 puckel/docker-airflow webserver
+    docker run -d -p 8080:8080 caerus/docker-airflow webserver
 
 If you want to run another executor, use the other docker-compose.yml files provided in this repository.
 
@@ -54,7 +52,7 @@ NB : If you want to have DAGs example loaded (default=False), you've to set the 
 
 `LOAD_EX=n`
 
-    docker run -d -p 8080:8080 -e LOAD_EX=y puckel/docker-airflow
+    docker run -d -p 8080:8080 -e LOAD_EX=y caerus/docker-airflow
 
 If you want to use Ad hoc query, make sure you've configured connections:
 Go to Admin -> Connections and Edit "postgres_default" set this values (equivalent to values in airflow.cfg/docker-compose*.yml) :
@@ -65,7 +63,7 @@ Go to Admin -> Connections and Edit "postgres_default" set this values (equivale
 
 For encrypted connection passwords (in Local or Celery Executor), you must have the same fernet_key. By default docker-airflow generates the fernet_key at startup, you have to set an environment variable in the docker-compose (ie: docker-compose-LocalExecutor.yml) file to set the same key accross containers. To generate a fernet_key :
 
-    docker run puckel/docker-airflow python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)"
+    docker run caerus/docker-airflow python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)"
 
 ## Configurating Airflow
 
@@ -111,7 +109,7 @@ This can be used to scale to a multi node setup using docker swarm.
 
 If you want to run other airflow sub-commands, such as `list_dags` or `clear` you can do so like this:
 
-    docker run --rm -ti puckel/docker-airflow airflow list_dags
+    docker run --rm -ti caerus/docker-airflow airflow list_dags
 
 or with your docker-compose set up like this:
 
@@ -119,8 +117,8 @@ or with your docker-compose set up like this:
 
 You can also use this to run a bash shell or any other command in the same environment that airflow would be run in:
 
-    docker run --rm -ti puckel/docker-airflow bash
-    docker run --rm -ti puckel/docker-airflow ipython
+    docker run --rm -ti caerus/docker-airflow bash
+    docker run --rm -ti caerus/docker-airflow ipython
 
 # Wanna help?
 
